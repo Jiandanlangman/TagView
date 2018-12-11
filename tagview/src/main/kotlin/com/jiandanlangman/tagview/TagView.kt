@@ -46,7 +46,7 @@ class TagView @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
     private fun typeSetting() {
         typeSettingThreadPool.execute {
             random = Random()
-            val region = Region(0, 0, width, height)
+            val region = this.region ?: Region(0, 0, width, height)
             val tagModels = ArrayList<TagModel>()
             tagModels.addAll(primaryTypeSetting(region))
             tagModels.addAll(secondaryTypeSetting(region))
