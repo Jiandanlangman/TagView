@@ -1,0 +1,71 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        versionCode 1000
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+uploadArchives {
+    String mavenRepoURL = System.getenv('MAVEN_REPO_RELEASE_URL') ?: ''
+    String nexusUserName = System.getenv("NEXUS_USERNAME") ?: ''
+    String nexusPassword = System.getenv("NEXUS_PASSWORD") ?: ''
+    String mavenGroupId = 'com.jiandanlangman'
+    String extension = 'aar'
+    String mavenArtifactId = 'tagview'
+    String versionName = android.defaultConfig.versionName
+
+    gradle.buildStarted {
+        if ('' == mavenRepoURL || '' == nexusUserName || '' == nexusPassword) {
+            String exception = 'undefined param NEXUS_USERNAME and param NEXUS_PASSWORD.'
+            println(exception)
+            throw IllegalArgumentException(exception)
+        }
+    }
+
+    repositories {
+        mavenDeployer {
+            repository(url: mavenRepoURL) {
+                authentication(userName: nexusUserName, password: nexusPassword)
+            }
+            pom.project {
+                version versionName
+                artifactId mavenArtifactId
+                groupId mavenGroupId
+                packaging extension
+            }
+        }
+    }
+
+    gradle.buildFinished {
+        if ('' != mavenRepoURL && '' != nexusUserName && '' != nexusPassword) {
+            String mavenGroupPath = mavenGroupId.replace(".", "/")
+            println("Upload success, URL: $mavenRepoURL/$mavenGroupPath/$mavenArtifactId/$versionName/$mavenArtifactId-$versionName.$extension")
+        }
+    }
+}
+
