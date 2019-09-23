@@ -7,7 +7,6 @@
 ![ScreenRecord](https://github.com/Jiandanlangman/TagView/blob/master/screenshot.jpg)
 
 ### 接入方式
-不想提供maven仓库地址了，自己看着办吧
 - 下载源码，将名为tagview的module加入到你的工程，或者将module打包成aar格式
 - maven方式接入
     编辑你Project的build.gradle文件
@@ -26,7 +25,7 @@
     implementation "com.jiandanlangman:tagview:1.0.1@aar"
     ```
 
-### 主要API说明
+### 主要API说明   
     ```
     //设置标签
     fun setTags(tags: List<String>)
