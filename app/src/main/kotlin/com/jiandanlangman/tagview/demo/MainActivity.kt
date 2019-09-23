@@ -11,16 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val tagView = findViewById<TagView>(R.id.tagView)
-        tagView.setColors(0xFF333333.toInt(), 0xFF999999.toInt())
-        val tags = ArrayList<String>()
-        tags.add("小清新")
-        tags.add("萌萌哒")
-        tags.add("鸡头")
-        tags.add("只爱英剧")
-        tags.add("大叔")
-        tags.add("铲屎官")
-        tags.add("铲屎官")
-        tagView.setTags(tags)
+        tagView.setTags("乐群", "聪慧", "追剧", "世界上最快的男人", "大长腿", "双眼皮", "教你打扮", "情感陪护")
         findViewById<View>(R.id.button).setOnClickListener { tagView.reTypeSetting() }
     }
 }
